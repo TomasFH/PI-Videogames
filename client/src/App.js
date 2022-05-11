@@ -1,9 +1,14 @@
 import './App.css';
+import Contador from './components/contador';
+import NavBar from './components/NavBar';
+import Videogames from './components/Videogames';
 
 function App() {
   return (
     <div className="App">
-      <h1>Henry Videogames</h1>
+      <NavBar />
+      {/* <Contador /> */}
+      <Videogames />
     </div>
   );
 }

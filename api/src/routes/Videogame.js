@@ -4,6 +4,7 @@ const { Router } = require('express');
 const { Videogame, Genre } = require("../db");
 // axios cuando lo instale/necesite
 const axios = require('axios');
+const { Op } = require('sequelize');
 
 
 const router = Router();
@@ -19,10 +20,14 @@ router.get("/", async (req, res, next) => {
             const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}`)
             const dbVideogamePromise = await Videogame.findAll({
                 where: {
-                    name
+                    name: {
+                        [Op.iLike] : '%' + name + '%'
+                    }
                 },
                 include: Genre
             })
+
+            console.log('dbVideogamePromise ', dbVideogamePromise)
 
             const filteredApiVideogame = apiVideogamePromise.data.results.map((videogame) => {
                 return {
@@ -30,7 +35,8 @@ router.get("/", async (req, res, next) => {
                     name: videogame.name,
                     image: videogame.background_image,
                     genres: videogame.genres,   //llega como arreglo
-                    rating: videogame.rating
+                    rating: videogame.rating,
+                    id: videogame.id
                 }
             })
 
@@ -40,6 +46,7 @@ router.get("/", async (req, res, next) => {
                     image: videogame.dataValues.image,
                     genres: videogame.dataValues.genres,
                     rating: videogame.dataValues.rating,
+                    id: videogame.dataValues.id
                 }
             })
 
@@ -71,6 +78,7 @@ router.get("/", async (req, res, next) => {
                    image: videogame.dataValues.image,
                    genres: videogame.dataValues.genres,
                    rating: videogame.dataValues.rating,
+                   id: videogame.dataValues.id,
                }
             })
     
@@ -80,7 +88,8 @@ router.get("/", async (req, res, next) => {
                     name: videogame.name,
                     image: videogame.background_image,
                     genres: videogame.genres,   //llega como arreglo
-                    rating: videogame.rating
+                    rating: videogame.rating,
+                    id: videogame.id,
                 }
             })
     
