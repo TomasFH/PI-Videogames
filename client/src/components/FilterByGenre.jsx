@@ -3,14 +3,14 @@ import { filterByGenre, getGenres } from "../store1/actions";
 
 export default function FilterByGenre() {
 
-    let allVideogames = useSelector(state => state.videogames);
+    // let allVideogames = useSelector(state => state.videogames);
     let allGenres = useSelector(state => state.genres);
 
     const dispatch = useDispatch();
 
-    function getGenresList(){
-        dispatch(getGenres())
-    }
+    // function getGenresList(){
+    //     dispatch(getGenres())
+    // }
 
     function selected(e){
         console.log(e.target.value); // género
@@ -22,8 +22,11 @@ export default function FilterByGenre() {
 
     return(
         <div>
-                <button onClick={getGenresList}>Traer géneros</button> {/* esto hay que cambiarlo por el useEffect */}
+                {/* <button onClick={getGenresList}>Traer géneros</button> esto hay que cambiarlo por el useEffect */}
             <div>
+
+                <>Genre </>
+
                 <select name="genre" id="genre" onChange={selected} defaultValue="Select an option">
                     <option value="Select an option" disabled>Select an option</option>
                     {

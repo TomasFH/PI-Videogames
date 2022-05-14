@@ -1,4 +1,4 @@
-import { AUMENTAR, CLEAR, CLEAR_MY_GAMES, FILTER_BY_GENRE, GET_GENRES, GET_VIDEOGAMES, ORDER_BY, RESET_ORDER, SEARCH_VIDEOGAME, SET_SELECTED_INPUT, WHICH_GAMES } from "../actions";
+import { AUMENTAR, CLEAR, CLEAR_BY_GENRE, CLEAR_MY_GAMES, FILTER_BY_GENRE, GET_GENRES, GET_VIDEOGAMES, ORDER_BY, RESET_ORDER, SEARCH_VIDEOGAME, SET_SELECTED_INPUT, WHICH_GAMES } from "../actions";
 
 const initialState = {
     contador: 0,
@@ -190,9 +190,21 @@ export default function reducer(state = initialState, action) {
                     return (game.genres.filter(genre => genre.name === action.payload).length > 0)
                 })
 
+                if(filteredByGenre.length === 0){
+                    setTimeout(() => {
+                        alert('No videogames match with that genre. Showing all games instead.')
+                    }, 50);
+                }
+
                 return {
                     ...state,
                     filteredByGenre
+                }
+
+            case CLEAR_BY_GENRE:
+                return {
+                    ...state,
+                    filteredByGenre: []
                 }
 
 

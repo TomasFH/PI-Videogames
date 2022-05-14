@@ -1,15 +1,21 @@
-export default function Videogame({name, image, genres }){
+import { Link } from "react-router-dom"
+
+export default function Videogame({name, image, genres, id }){
   //nombre, imágen, genero/s
   // vg = videogame
   
     return (
       <div>
-        <div className="vgCard"> 
-          <img src={image} alt="img not found" />
-        </div>
-        <div className="vdName">
-          <h2>{name}</h2>
-        </div>
+        <Link to={`/details/${id}`}>
+          <div className="vgCard"> 
+            <img src={image} alt="img not found" />
+          </div>
+        </Link>
+        <Link to={`/details/${id}`}>
+          <div className="vdName">
+            <h2>{name}</h2>
+          </div>
+        </Link>
         <div className="vgGenre">
           <p>Genre: 
             {

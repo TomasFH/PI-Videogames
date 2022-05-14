@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchVideogame, clear, resetOrder, setSelectedInput } from "../store1/actions";
-import FilterByGenre from "./FilterByGenre";
+// import FilterByGenre from "./FilterByGenre";
+// import NotFound from "./NotFound";
 import Order from "./Order";
 
 export default function Input () {
@@ -32,14 +33,8 @@ export default function Input () {
             <form action="searchVideogame">
             <input type="text" name="searchVideogame" value={input} id="searchVideogame" placeholder="Search videogames.." onChange={onChangeHandler} />
             <button type="submit" onClick={onSubmitHandler}>Search</button>
-            {/* <button onClick={onClearHandler}>Clear</button> */}
+            <button onClick={onClearHandler}>Clear</button>
             </form>
-       </div>
-       <div>
-           <Order />
-       </div>
-       <div>
-           <FilterByGenre />
        </div>
     </div>
 }

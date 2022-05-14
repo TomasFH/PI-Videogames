@@ -27,7 +27,7 @@ router.get("/", async (req, res, next) => {
                 include: Genre
             })
 
-            console.log('dbVideogamePromise ', dbVideogamePromise)
+            // console.log('dbVideogamePromise ', dbVideogamePromise)
 
             const filteredApiVideogame = apiVideogamePromise.data.results.map((videogame) => {
                 return {
@@ -107,47 +107,54 @@ router.get("/:videogameId", async (req, res, next) => {
 
     const { videogameId } = req.params;
 
-    if(videogameId.length < 8 ){
-        //el tamaño de las ID's de la API suelen ser de 6 números. Si supera esa longitud, no pregunta nada a la API.
-        const apiVideogamePromise = axios.get(`https://api.rawg.io/api/games/${videogameId}`)
-        apiVideogamePromise.then((response) => {
-            const apiVideogame = response;
-            const filteredApiVideogame = {
-                id: apiVideogame.data.id,
-                name: apiVideogame.data.name,
-                image: apiVideogame.data.image,
-                genres: apiVideogame.data.genres,
-                description: apiVideogame.data.description,
-                releaseDate: apiVideogame.data.released,
-                rating: apiVideogame.data.rating,
-                platforms: apiVideogame.data.platforms
-            };
 
-            res.send(filteredApiVideogame);
-        })
-    } else {
-        //si es mayor de 8 (por poner un número de longitud mayor que los de la API y menos que los de la DB) busca en la base de datos
-        const dbVideogamePromise = await Videogame.findAll({
-            include: Genre,
-            where: {
-                id: videogameId
+    try {
+
+        if(videogameId.length < 8 ){
+            //el tamaño de las ID's de la API suelen ser de 6 números. Si supera esa longitud, no pregunta nada a la API.
+            const apiVideogamePromise = axios.get(`https://api.rawg.io/api/games/${videogameId}?key=${API_KEY}`)
+            apiVideogamePromise.then((response) => {
+                const apiVideogame = response;
+                // console.log(apiVideogame);
+                const filteredApiVideogame = {
+                    id: apiVideogame.data.id,
+                    name: apiVideogame.data.name,
+                    image: apiVideogame.data.background_image,
+                    genres: apiVideogame.data.genres,
+                    description: apiVideogame.data.description,
+                    releaseDate: apiVideogame.data.released,
+                    rating: apiVideogame.data.rating,
+                    platforms: apiVideogame.data.platforms
+                };
+
+                res.send(filteredApiVideogame);
+            })
+        } else {
+            //si es mayor de 8 (por poner un número de longitud mayor que los de la API y menos que los de la DB) busca en la base de datos
+            const dbVideogamePromise = await Videogame.findAll({
+                include: Genre,
+                where: {
+                    id: videogameId
+                }
+            })
+
+            const aux = dbVideogamePromise[0].dataValues; //al filtar por ID, debería tener un único valor en mi arreglo, por eso busco el elemento de la posición 0.
+            const filteredDbVideogame = {
+                id: aux.id,
+                name: aux.name,
+                image: aux.image,
+                genres: aux.genres,
+                description: aux.description,
+                releaseDate: aux.releaseDate,
+                rating: aux.rating,
+                platforms: aux.platforms
             }
-        })
 
-        const aux = dbVideogamePromise[0].dataValues; //al filtar por ID, debería tener un único valor en mi arreglo, por eso busco el elemento de la posición 0.
-        const filteredDbVideogame = {
-            id: aux.id,
-            name: aux.name,
-            image: aux.image,
-            genres: aux.genres,
-            description: aux.description,
-            releaseDate: aux.releaseDate,
-            rating: aux.rating,
-            platforms: aux.platforms
+            // console.log(aux)
+            res.send(filteredDbVideogame)
         }
-
-        // console.log(aux)
-        res.send(filteredDbVideogame)
+    } catch (error) {
+            
     }
 })
 
