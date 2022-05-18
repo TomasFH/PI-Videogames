@@ -70,9 +70,8 @@ export default function VideogameDetails() {
         <img src={details.image} alt="not found" />
 
         <p>Description: {details.description}</p>
-        <div>
-            <p>Genre: {genreList}</p>
-        </div>
+
+        <p>Genre: {genreList}</p>
 
         <p>Release date: {details.releaseDate}</p>
 

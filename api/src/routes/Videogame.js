@@ -121,7 +121,7 @@ router.get("/:videogameId", async (req, res, next) => {
                     name: apiVideogame.data.name,
                     image: apiVideogame.data.background_image,
                     genres: apiVideogame.data.genres,
-                    description: apiVideogame.data.description,
+                    description: apiVideogame.data.description_raw,
                     releaseDate: apiVideogame.data.released,
                     rating: apiVideogame.data.rating,
                     platforms: apiVideogame.data.platforms
@@ -164,7 +164,7 @@ router.post("/", async (req, res, next) => {
     try {
 
         let {name, description, releaseDate, rating, platforms, image } = req.body;
-        let nameLC = name?.toLowerCase(); //LC = Lower Case
+        // let nameLC = name?.toLowerCase(); //LC = Lower Case
     
         // console.log("Se mandó por body name: ", name);
         // console.log("Se mandó por body description: ", description);
@@ -184,6 +184,26 @@ router.post("/", async (req, res, next) => {
         next(error);
     };
 
+})
+
+router.post(`/link-to-genre/:videogameId/:genreId`, async (req, res, next) => {
+    const {videogameId, genreId} = req.params;
+
+    try{
+    if(videogameId.length > 8) {
+        // si el videojuego viene de la DB
+        const videogameDb = await Videogame.findByPk(videogameId);
+        // console.log(videogameDb);
+        await videogameDb.addGenre(genreId);
+        res.status(201).send('Se ha vinculado el videojuego al género indicado.')
+    ;} else {
+        //si el videojuego viene de la API
+        const videogameAPI = await axios.get(`https://api.rawg.io/api/games/${videogameId}?key=${API_KEY}`);
+        await videogameAPI.addGenre(genreId);
+    }
+    } catch(err){
+        next(err);
+    }
 })
 
 module.exports = router;

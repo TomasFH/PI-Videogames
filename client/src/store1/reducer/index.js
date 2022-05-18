@@ -7,6 +7,7 @@ const initialState = {
     orderedVideogames: [],
     showMyGames: [],
     genres: [],
+    detailedGenres: [],
     filteredByGenre: [],
     selectedInput: '',
 }
@@ -181,6 +182,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 genres: action.payload.map(g => {
                     return g.name
+                }),
+                detailedGenres: action.payload.map(g => {
+                    return g
                 })
             }
 
