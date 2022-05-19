@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchVideogame, clear, resetOrder, setSelectedInput } from "../store1/actions";
 // import FilterByGenre from "./FilterByGenre";
 // import NotFound from "./NotFound";
@@ -9,6 +9,7 @@ export default function Input () {
     
     const [input, setInput] = useState('');         // estado que contiene el valor del input actualizado
     const dispatch = useDispatch();
+    let videogames = useSelector(state => state.videogames)
 
     function onChangeHandler(e){
         setInput(e.target.value);
@@ -26,6 +27,10 @@ export default function Input () {
         e.preventDefault();
         dispatch(clear());
         dispatch(resetOrder());
+    }
+
+    if(!(videogames.length)){
+        return <div></div>
     }
 
     return <div>

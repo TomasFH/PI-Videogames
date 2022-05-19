@@ -5,27 +5,32 @@ import { Route, Switch } from 'react-router-dom';
 import VideogameDetails from './components/VideogameDetails';
 import AddVideogame from './components/AddVideogame';
 import Order from './components/Order';
+import LandingPage from './components/LandingPage';
 
 function App() {
   return (
     <div className="App">
 
-    <Route path="/">
+    <Route path="/videogames">
       <NavBar />
+    </Route>
+
+    <Route exact path={"/welcome"}>
+      <LandingPage />
     </Route>
 
     <Switch>
 
-      <Route exact path="/">
+      <Route exact path="/videogames">
         <Order />
         <Videogames />
       </Route>
 
-      <Route path="/details/:videogameId">
+      <Route path="/videogames/details/:videogameId">
         <VideogameDetails />
       </Route>
 
-      <Route path="/add-videogame">
+      <Route path="/videogames/add-videogame">
         <AddVideogame />
       </Route>
 

@@ -5,7 +5,8 @@ import FilterByGenre from "./FilterByGenre";
 
 export default function Order(){
 
-    let searchedVideogames = useSelector(state => state.searchedVideogames)
+    let videogames = useSelector(state => state.videogames);
+    let searchedVideogames = useSelector(state => state.searchedVideogames);
 
     const dispatch = useDispatch();
 
@@ -41,11 +42,16 @@ export default function Order(){
             reset();
         }
     }
-
+    
     function radioBtn(e) {
         // console.log(e.target.value);
         setOrderByInput(e.target.value);
         reset()
+    }
+    
+
+    if(!(videogames.length)){
+        return <div></div>
     }
 
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getGenres } from '../store1/actions';
 import SelectedInputAddVG from './SelectInputAddVG';
 
@@ -13,7 +13,7 @@ export default function AddVideogame() {
     // const [genresExist, setGenresExist] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState([]);
 
-    const dispatch = useDispatch();
+
     
     useEffect(() => {
         
@@ -59,7 +59,7 @@ export default function AddVideogame() {
         name: '',
         description: '',
         releaseDate: '',
-        rating: 0,
+        rating: '',
         image: '',
         errorWarning: '',
         genre: [],
@@ -109,9 +109,18 @@ export default function AddVideogame() {
 
     function onClose(genre){
         let aux = selectedGenres;
+        let aux1 = aux.filter(g => {
+            return g.name === genre
+        })
         let aux2 = aux.filter(g => {
             return g.name !== genre
         })
+        setGenreList([
+            ...genreList,
+            aux1[0]
+        ])
+
+        // console.log("Soy aux1: ", aux1)
         setSelectedGenres(aux2);
     }
 
@@ -165,7 +174,7 @@ export default function AddVideogame() {
                     ...form,
                     createdVideogameID: r.data.id,
                     errorWarning: '',
-                    success: 'Videogame created successfully!'
+                    success: 'Videogame was created successfully!'
                 })
                 
                 //Ahora que tengo la ID del nuevo juego que acabo de crear le vinculo el o los géneros que el cliente

@@ -55,12 +55,12 @@ export default function reducer(state = initialState, action) {
             switch(action.payload){
 
                 case "Popularity":
-                    console.log('Me ejecuté: ', action.payload);
+                    // console.log('Me ejecuté: ', action.payload);
                     aux = defaultPopularity;
                 break;
 
                 case "A-Z":
-                    console.log('Me ejecuté: ', action.payload);
+                    // console.log('Me ejecuté: ', action.payload);
                     aux = aux.sort((a,b) => {
                         if(a.name.toLowerCase() < b.name.toLowerCase()) {
                             return -1
@@ -74,11 +74,11 @@ export default function reducer(state = initialState, action) {
                         si es mayor, 1; y, si es igual, 0. En vase a esos valores acomoda
                         izq o derecha en el arreglo*/
                     })
-                    console.log(aux);
+                    // console.log(aux);
                 break;
 
                 case "Z-A":
-                    console.log('Me ejecuté: ', action.payload);
+                    // console.log('Me ejecuté: ', action.payload);
                     aux = aux.sort((a,b) => {
                         if(a.name.toLowerCase() < b.name.toLowerCase()) {
                             return 1
@@ -92,11 +92,11 @@ export default function reducer(state = initialState, action) {
                         si es mayor, 1; y, si es igual, 0. En vase a esos valores acomoda
                         izq o derecha en el arreglo*/
                     })
-                    console.log(aux);
+                    // console.log(aux);
                 break;
 
                 case "Rating (+)":
-                    console.log('Me ejecuté: ', action.payload);
+                    // console.log('Me ejecuté: ', action.payload);
                     aux = aux.sort((a,b) => {
                         if(a.rating < b.rating) {
                             return 1
@@ -110,11 +110,11 @@ export default function reducer(state = initialState, action) {
                         si es mayor, 1; y, si es igual, 0. En vase a esos valores acomoda
                         izq o derecha en el arreglo*/
                     })
-                    console.log(aux);
+                    // console.log(aux);
                 break;
                     
                     case "Rating (-)":
-                        console.log('Me ejecuté: ', action.payload);
+                        // console.log('Me ejecuté: ', action.payload);
                         aux = aux.sort((a,b) => {
                             if(a.rating < b.rating) {
                                 return -1
@@ -128,7 +128,7 @@ export default function reducer(state = initialState, action) {
                         si es mayor, 1; y, si es igual, 0. En vase a esos valores acomoda
                         izq o derecha en el arreglo*/
                     })
-                    console.log(aux);
+                    // console.log(aux);
                 break;
 
                 default:
@@ -147,7 +147,7 @@ export default function reducer(state = initialState, action) {
             }
 
         case SET_SELECTED_INPUT:
-            console.log(action.payload);
+            // console.log(action.payload);
             return {
                 ...state,
                 selectedInput: action.payload

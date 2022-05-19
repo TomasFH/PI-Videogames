@@ -6,12 +6,12 @@ export default function Videogame({name, image, genres, id }){
   
     return (
       <div>
-        <Link to={`/details/${id}`}>
+        <Link to={`/videogames/details/${id}`}>
           <div className="vgCard"> 
             <img src={image} alt="img not found" />
           </div>
         </Link>
-        <Link to={`/details/${id}`}>
+        <Link to={`/videogames/details/${id}`}>
           <div className="vdName">
             <h2>{name}</h2>
           </div>
