@@ -69,6 +69,41 @@ export default function AddVideogame() {
         success: '',
     });
 
+    const [errorInput, setErrorInput] = useState({
+        name: '',
+        description: '',
+        image: '',
+        platforms: '',
+
+    })
+
+    //Función para validar los inputs.
+
+    function validateInputs(input){
+        let errors = {};
+
+        const expressionIsAnURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+
+
+        if(input.name === ''){
+            errors.name = 'Name is required';
+        }
+        if(input.description === ''){
+            errors.description = 'Description is required';
+        }
+        if(input.image === ''){
+            errors.image = "Image's URL is required";
+        } else if(!expressionIsAnURL.test(input.image)){
+            console.log("La URL ingresada es incorrecta");
+            errors.image = 'URL not valid.'
+        }
+        if(input.platforms === ''){
+            errors.platforms = 'Platform is required';
+        }
+
+        return errors;
+    }
+
     //Función que creará una propiedad en el objeto del estado o, si ya existe, modifica su valor.
 
     function onChangeHandler(e) {
@@ -76,6 +111,13 @@ export default function AddVideogame() {
             ...form,
             [e.target.name]: e.target.value
         })
+
+        let errorResults = validateInputs({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+
+        setErrorInput(errorResults);
     }
 
     //Función encargada de agregar un género a la lista de géneros que se van a vincular al juego creado.
@@ -193,7 +235,8 @@ export default function AddVideogame() {
                     // console.log('There is a videogame with that name already. Please try with another name.');
                     setForm({
                         ...form,
-                        errorWarning: 'There is a videogame with that name already. Please try with another name.'
+                        errorWarning: 'There is a videogame with that name already. Please try with another name.',
+                        success: '',
                     });
                     document.getElementById("name").className = styles.warning;
                 }
@@ -217,11 +260,16 @@ export default function AddVideogame() {
 
         <div className={styles.divForm}>
         <form onSubmit={onSubmitHandler} className={styles.form}>
+                    {
+                        (errorInput && errorInput.name)? <p className={styles.warningMessage}>{errorInput.name}</p> : null
+                    }
                 <div className={styles.input}>
                     <label htmlFor="name" className={styles.label}>Videogame name:</label>
                     <textarea type="text" name="name" value = {form.name} id="name" placeholder="Videogame name" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
-
+                    {
+                        (errorInput && errorInput.description)? <p className={styles.warningMessage}>{errorInput.description}</p> : null
+                    }
                 <div className={styles.input}>
                     <label htmlFor="description" className={styles.label}>Description: </label>
                     <textarea type="text" name="description" value = {form.description} id="description" placeholder="Description" onChange={onChangeHandler} className={styles.inputDescription}/>
@@ -236,11 +284,18 @@ export default function AddVideogame() {
                     <label htmlFor="rating" className={styles.label}>Rating: </label>
                     <textarea type="text" name="rating" value = {form.rating} id="rating" placeholder="Rating" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
-                
+
+                    {
+                        (errorInput && errorInput.image)? <p className={styles.warningMessage}>{errorInput.image}</p> : null
+                    }
                 <div className={styles.input}>
                     <label htmlFor="image" className={styles.label}>Image URL* : </label>
                     <textarea type="text" name="image" value = {form.image} id="image" placeholder="Image's URL" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
+
+                    {
+                        (errorInput && errorInput.platforms)? <p className={styles.warningMessage}>{errorInput.platforms}</p> : null
+                    }
                 <div className={styles.input}>
                     <label htmlFor="platforms" className={styles.label}>Platforms* : </label>
                     <textarea type="text" name="platforms" value = {form.platforms} id="platforms" placeholder="Available on..." onChange={onChangeHandler} className={styles.inputBox} />

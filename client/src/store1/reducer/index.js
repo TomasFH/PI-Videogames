@@ -1,4 +1,4 @@
-import { AUMENTAR, CLEAR, CLEAR_BY_GENRE, CLEAR_MESSAGE, CLEAR_MY_GAMES, FILTER_BY_GENRE, GET_GENRES, GET_VIDEOGAMES, ORDER_BY, RESET_ORDER, SEARCH_VIDEOGAME, SET_SELECTED_INPUT, WHICH_GAMES } from "../actions";
+import { AUMENTAR, CHANGE_CURRENT_PAGE, CLEAR, CLEAR_BY_GENRE, CLEAR_MESSAGE, CLEAR_MY_GAMES, FILTER_BY_GENRE, GET_GENRES, GET_VIDEOGAMES, ORDER_BY, RESET_ORDER, SEARCH_VIDEOGAME, SET_SELECTED_INPUT, SHOW_MY_GAMES_ONLY, WHICH_GAMES } from "../actions";
 
 const initialState = {
     contador: 0,
@@ -6,11 +6,14 @@ const initialState = {
     searchedVideogames: [],
     orderedVideogames: [],
     showMyGames: [],
+    justMyGames: false,
     genres: [],
     detailedGenres: [],
     filteredByGenre: [],
     selectedInput: '',
     filteredByGenreNotFound: '',
+    currentPage: 1,
+    videogamesPerPage: 15,
 }
 
 export default function reducer(state = initialState, action) {
@@ -218,6 +221,18 @@ export default function reducer(state = initialState, action) {
                 return {
                     ...state,
                     filteredByGenreNotFound: ''
+                }
+
+            case SHOW_MY_GAMES_ONLY:
+                return {
+                    ...state,
+                    justMyGames: action.payload
+                }
+
+            case CHANGE_CURRENT_PAGE:
+                return {
+                    ...state,
+                    currentPage: action.payload
                 }
 
 

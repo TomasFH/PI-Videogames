@@ -8,6 +8,7 @@
 textarea {
     width: 300px;
     resize: none;
+    overflow: hidden;
 }
 
 select {
@@ -34,6 +35,11 @@ select {
     color: #ffffff;
     background-color: #202020;
     border-radius: 20px;
+}
+
+.warningMessage {
+    color: rgb(208, 67, 67);
+    font-size: 15px;
 }
 
 .warningDescription {

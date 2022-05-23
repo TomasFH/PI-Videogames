@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { searchVideogame, clear, resetOrder, setSelectedInput, clearByGenre, clearMyGames } from "../store1/actions";
+import { searchVideogame, clear, resetOrder, setSelectedInput, clearByGenre, clearMyGames, showMyGamesOnly, changeCurrentPage } from "../store1/actions";
 // import FilterByGenre from "./FilterByGenre";
 // import NotFound from "./NotFound";
 import Order from "./Order";
@@ -25,11 +25,13 @@ export default function Input () {
         dispatch(setSelectedInput(''));
         dispatch(clearMyGames());
         dispatch(clearByGenre());
+        dispatch(changeCurrentPage(1));
         if(document.getElementById("myGames").checked){
             document.getElementById("myGames").checked = false;
             dispatch(clearMyGames());
             dispatch(clear());
             dispatch(resetOrder());
+            dispatch(showMyGamesOnly(false));
         }
     }
 
@@ -38,15 +40,16 @@ export default function Input () {
         dispatch(clear());
         dispatch(resetOrder());
         dispatch(clearByGenre());
+        dispatch(changeCurrentPage(1));
         let auxAZ = document.getElementById("a-z");
         let auxGenre = document.getElementById("genre");
         if(auxAZ?.checked){
-            document.getElementById("orderSelect").value = "Select an option";
             auxAZ.checked = false
+            document.getElementById("order").value = "Select an option";
         }
         if(auxGenre?.checked){
-            document.getElementById("genreSelect").value = "Select an option";
             auxGenre.checked = false
+            document.getElementById("genreSelect").value = "Select an option";
         }
     }
 

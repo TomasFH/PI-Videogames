@@ -1,29 +1,26 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clear, clearByGenre, clearMyGames, orderBy, resetOrder, setSelectedInput, whichGames } from "../store1/actions";
+import { clear, clearByGenre, clearMyGames, orderBy, resetOrder, setSelectedInput, showMyGamesOnly, whichGames } from "../store1/actions";
 import FilterByGenre from "./FilterByGenre";
 
 export default function Order(){
 
     let videogames = useSelector(state => state.videogames);
     let searchedVideogames = useSelector(state => state.searchedVideogames);
+    let justMyGames = useSelector(state => state.justMyGames);
 
     const dispatch = useDispatch();
 
-    // const [ordered, setOrdered] = useState(false);
-    const [orderByInput, setOrderByInput] = useState('')
-    const [justMyGames, setJustMyGames] = useState(false);
+    const [orderByInput, setOrderByInput] = useState('');
+    // const [justMyGames, setJustMyGames] = useState(false);
 
-    // console.log('Ordered: ', ordered);
 
     function selected(e){
         dispatch(orderBy(e.target.value));
         dispatch(setSelectedInput(e.target.value));
-        // setOrdered(true);
     }
     
     function reset(){
-        // setOrdered(false);
         dispatch(setSelectedInput(''));
         dispatch(clear());
         dispatch(resetOrder());
@@ -34,11 +31,13 @@ export default function Order(){
         // console.log(e.target.checked)
         if(e.target.checked){
             dispatch(whichGames());
-            setJustMyGames(true);
+            // setJustMyGames(true);
+            dispatch(showMyGamesOnly(true))
         }
         if(!e.target.checked){
             dispatch(clearMyGames());
-            setJustMyGames(false);
+            // setJustMyGames(false);
+            dispatch(showMyGamesOnly(false))
             reset();
         }
     }

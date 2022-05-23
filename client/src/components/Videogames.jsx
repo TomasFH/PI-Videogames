@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearByGenre, clearMessage, getGenres, getVideogames } from "../store1/actions";
+import { changeCurrentPage, clearByGenre, clearMessage, getGenres, getVideogames } from "../store1/actions";
 import NotFound from "./NotFound";
 import Pagination from "./Pagination";
 import Videogame from "./Videogame";
@@ -8,8 +8,10 @@ import styles from "./Videogames.module.css";
 
 export default function Videogames(){
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [videogamesPerPage, setVideogamesPerPage] = useState(15);
+    // const [currentPage, setCurrentPage] = useState(1);
+    let currentPage = useSelector(state => state.currentPage);
+    // const [videogamesPerPage, setVideogamesPerPage] = useState(15);
+    let videogamesPerPage = useSelector(state => state.videogamesPerPage);
 
     let videogames = useSelector(state => state.videogames);
     let searchedVideogames = useSelector(state => state.searchedVideogames);
@@ -39,7 +41,8 @@ export default function Videogames(){
 
     //Change page
     function paginate(pageNumber){
-        setCurrentPage(pageNumber);
+        // setCurrentPage(pageNumber);
+        dispatch(changeCurrentPage(pageNumber))
     }
 
     //Función que limpia el estado con el mensaje de 'género no encontrado...'

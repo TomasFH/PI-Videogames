@@ -13,6 +13,8 @@ export const GET_GENRES = 'GET_GENRES';
 export const FILTER_BY_GENRE = 'FILTER_BY_GENRE';
 export const CLEAR_BY_GENRE = 'CLEAR_BY_GENRE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
+export const SHOW_MY_GAMES_ONLY = 'SHOW_MY_GAMES_ONLY';
+export const CHANGE_CURRENT_PAGE = 'CHANGE_CURRENT_PAGE';
 
 export function aumentar() {
     return {
@@ -111,5 +113,19 @@ export function clearByGenre(){
 export function clearMessage(){
     return {
         type: CLEAR_MESSAGE,
+    }
+}
+
+export function showMyGamesOnly(shouldShow){
+    return {
+        type: SHOW_MY_GAMES_ONLY,
+        payload: shouldShow
+    }
+}
+
+export function changeCurrentPage(number){
+    return {
+        type: CHANGE_CURRENT_PAGE,
+        payload: number
     }
 }
