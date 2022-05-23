@@ -10,7 +10,7 @@ export default function Order(){
 
     const dispatch = useDispatch();
 
-    const [ordered, setOrdered] = useState(false);
+    // const [ordered, setOrdered] = useState(false);
     const [orderByInput, setOrderByInput] = useState('')
     const [justMyGames, setJustMyGames] = useState(false);
 
@@ -19,11 +19,11 @@ export default function Order(){
     function selected(e){
         dispatch(orderBy(e.target.value));
         dispatch(setSelectedInput(e.target.value));
-        setOrdered(true);
+        // setOrdered(true);
     }
     
     function reset(){
-        setOrdered(false);
+        // setOrdered(false);
         dispatch(setSelectedInput(''));
         dispatch(clear());
         dispatch(resetOrder());

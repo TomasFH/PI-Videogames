@@ -67,7 +67,38 @@ router.get("/", async (req, res, next) => {
         //si no se le pasa ningún nombre por Query busca todo
 
         try {
-            const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
+            let promises = [];
+            let resultados;
+            let aux2 = [];
+        
+            for (let i = 1; i <= 5; i++) {
+                promises.push(axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`))
+            }
+        
+            await Promise.all(promises).then(values => {
+                // console.log("Me ejecuté 1: ", values[0].data.results, " Fin!");
+        
+                // resultados = values[0].data.results
+        
+                resultados = values.map(o => {
+                    return o.data.results
+                })
+        
+            }, reason => {
+              console.log("Me rechazé: ", reason)
+            });
+        
+            // console.log(resultados)
+        
+            for (let r = 0; r < resultados.length; r++) {
+                for (let s = 0; s < resultados[r].length; s++) {
+                    aux2 = [
+                        ...aux2,
+                        resultados[r][s]
+                    ]
+                }
+            }
+            // const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
             const dbVideogamePromise = await Videogame.findAll({
                 include: Genre
             })
@@ -82,7 +113,7 @@ router.get("/", async (req, res, next) => {
                }
             })
     
-            const filteredApiVideogame = apiVideogamePromise.data.results.map((videogame) => {
+            const filteredApiVideogame = aux2.map((videogame) => {
                 return {
                     // imagen, nombre, genero, rating
                     name: videogame.name,
@@ -102,6 +133,45 @@ router.get("/", async (req, res, next) => {
 
     }
 })
+
+// router.get("/",async (req,res,next) => {
+
+//     let promises = [];
+//     let resultados;
+//     let aux2 = [];
+
+//     for (let i = 1; i <= 5; i++) {
+//         promises.push(axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`))
+//     }
+
+//     await Promise.all(promises).then(values => {
+//         // console.log("Me ejecuté 1: ", values[0].data.results, " Fin!");
+
+//         // resultados = values[0].data.results
+
+//         resultados = values.map(o => {
+//             return o.data.results
+//         })
+
+//     }, reason => {
+//       console.log("Me rechazé: ", reason)
+//     });
+
+//     // console.log(resultados)
+
+//     for (let r = 0; r < resultados.length; r++) {
+//         for (let s = 0; s < resultados[r].length; s++) {
+//             aux2 = [
+//                 ...aux2,
+//                 resultados[r][s]
+//             ]
+//         }
+//     }
+
+//     console.log(aux2);
+
+//     res.send(aux2);
+// })
 
 router.get("/:videogameId", async (req, res, next) => {
 

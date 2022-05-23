@@ -1,0 +1,52 @@
+.contenedor {
+    border: rgba(128, 128, 128, 0.52) solid 2px;
+    border-radius: 10px;
+    width: 300px;
+    margin-bottom: 2em;
+}
+
+Link {
+    text-decoration: none;
+}
+
+.cardImage{
+width: 100%;
+height: 175px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+position: relative;
+}
+
+.vdName {
+    width: 300px;
+}
+
+.vdName h2 {
+    margin-top: 0%;
+    color: rgba(220, 220, 0, 0.992);
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px; 
+}
+
+.vdName h2:link {
+    color: rgba(220, 220, 0, 0.992);
+}
+
+.vdName h2:visited {
+    color: rgba(220, 220, 0, 0.992);
+}
+
+.vdName h2:focus {
+    background: #656525;
+}
+
+.vdName h2:hover {
+    background: #656525;
+}
+
+.vdName h2:active {
+    background: #4d5301;
+    color: #fefeaa;
+}

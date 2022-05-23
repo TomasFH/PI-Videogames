@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGenres, getVideogames } from "../store1/actions";
+import { clearByGenre, clearMessage, getGenres, getVideogames } from "../store1/actions";
 import NotFound from "./NotFound";
 import Pagination from "./Pagination";
 import Videogame from "./Videogame";
+import styles from "./Videogames.module.css";
 
 export default function Videogames(){
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [videogamesPerPage, setVideogamesPerPage] = useState(10);
+    const [videogamesPerPage, setVideogamesPerPage] = useState(15);
 
     let videogames = useSelector(state => state.videogames);
     let searchedVideogames = useSelector(state => state.searchedVideogames);
@@ -41,8 +42,15 @@ export default function Videogames(){
         setCurrentPage(pageNumber);
     }
 
-    console.log("Soy currentVideogames: ", currentVideogame);
-    console.log("Soy currentVideogamesSearched: ", currentVideogameSearched);
+    //Función que limpia el estado con el mensaje de 'género no encontrado...'
+    function clearMessageState(){
+        dispatch(clearMessage());
+        dispatch(clearByGenre());
+        document.getElementById("genreSelect").value = 'Select an option';
+    }
+
+    // console.log("Soy currentVideogames: ", currentVideogame);
+    // console.log("Soy currentVideogamesSearched: ", currentVideogameSearched);
 
     if(!(videogames.length)){
         return(
@@ -51,9 +59,10 @@ export default function Videogames(){
             </div>
         )
     }
-    return <div>
+    return (<div>
         {/* <button onClick={() => dispatch(getVideogames())}>Traer videojuegos</button> */}
-        
+
+        <div className={styles.videogames} id={"videogamesList"}>
         {
             (showMyGames.length)? currentMyVideogames.map(v => {
                 return (<div key={v.id}>
@@ -61,7 +70,7 @@ export default function Videogames(){
                 </div>
                 )
             }) : 
-            (filteredByGenreNotFound)? <NotFound /> :
+            (filteredByGenreNotFound.length)? <NotFound message={filteredByGenreNotFound} clearMessageFunction={clearMessageState}/> :
             (filteredByGenre.length)? currentVideogameFilteredByGenre.map(v => {
                 return (<div key={v.id}>
                     <Videogame name={v.name} image={v.image} genres={v.genres} id={v.id} key={v.id} />
@@ -91,15 +100,20 @@ export default function Videogames(){
             Sino, mostrará todos los videojuegos */
             
         }
-        {(showMyGames.length)?
-        <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={showMyGames.length} paginate={paginate}/> :
-        (filteredByGenre.length)?
-        <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={filteredByGenre.length} paginate={paginate}/> :
-        (orderedVideogames.length)?
-        <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={orderedVideogames.length} paginate={paginate}/> :
-        (searchedVideogames.length)?
-        <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={searchedVideogames.length} paginate={paginate}/> :
-        <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={videogames.length} paginate={paginate}/>
-        }
-    </div>
+        </div>
+        <div>
+            {
+                (filteredByGenreNotFound.length)? null :
+                (showMyGames.length)?
+                <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={showMyGames.length} paginate={paginate}/> :
+                (filteredByGenre.length)?
+                <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={filteredByGenre.length} paginate={paginate}/> :
+                (orderedVideogames.length)?
+                <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={orderedVideogames.length} paginate={paginate}/> :
+                (searchedVideogames.length)?
+                <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={searchedVideogames.length} paginate={paginate}/> :
+                <Pagination videogamesPerPage={videogamesPerPage} totalVideogames={videogames.length} paginate={paginate}/>
+            }
+        </div>
+    </div>)
 }

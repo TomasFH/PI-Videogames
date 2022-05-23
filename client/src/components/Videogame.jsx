@@ -1,27 +1,34 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import styles from "./Videogame.module.css";
 
 export default function Videogame({name, image, genres, id }){
   //nombre, imágen, genero/s
   // vg = videogame
+  // console.log(genres)
   
     return (
-      <div>
-        <Link to={`/videogames/details/${id}`}>
+      <div className={styles.contenedor}>
+        <Link to={`/videogames/details/${id}`} style={{ textDecoration: 'none'}}>
           <div className="vgCard"> 
-            <img src={image} alt="img not found" />
+            <img src={image} alt="img not found" className={styles.cardImage}/>
           </div>
         </Link>
-        <Link to={`/videogames/details/${id}`}>
-          <div className="vdName">
+          <div className={styles.vdName}>
+        <Link to={`/videogames/details/${id}`} style={{ textDecoration: 'none'}}>
             <h2>{name}</h2>
-          </div>
         </Link>
+          </div>
         <div className="vgGenre">
           <p>Genre: 
             {
-              genres.map(g => {
-                return ' ' + g.name + ' | | '
+              genres.map((g, i) => {
+                if(genres.length && i === genres.length - 1){
+                  return " " + g.name + "."
+                } else if(genres.length && i < genres.length - 1){
+                  return " " + g.name + ","
+                }
               })
+              
             }
           </p>
         </div>

@@ -1,0 +1,44 @@
+.landingPage {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-image: url("https://cdn.vox-cdn.com/thumbor/qXIegymAZU6HdA4XjeTOY5YEFXU=/139x136:2861x1565/fit-in/2722x1429/cdn.vox-cdn.com/uploads/chorus_asset/file/23067480/jbareham_211201_ecl1139_goty_2021_top50_16x9_no_bug.jpg");
+    
+}
+
+.landingPage div h1 {
+    margin: 0%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 25%;
+    bottom: 50%;
+}
+
+.message {
+    border: rgb(160, 160, 160) 3px solid;
+    border-radius: 50px;
+    background-color: hsla(0, 0%, 39%, 0.800);
+    padding: 10px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    /* font-size: 48px; */
+}
+
+.message div h1 {
+    font-size: 80px;
+}
+
+.btn {
+    color: rgb(255, 255, 255);
+    border: rgb(160, 160, 160) 3px solid;
+    border-radius: 20px;
+    background-color: #343434;
+    font-size: 20px;
+    padding: 7px;
+    cursor: pointer;
+}

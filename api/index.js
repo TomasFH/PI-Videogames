@@ -26,7 +26,7 @@ const { Genre } = require("./src/db.js");
 
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: false }).then(() => {
 
   async function createGenreList(){
     await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)

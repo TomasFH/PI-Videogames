@@ -12,6 +12,7 @@ export const CLEAR_MY_GAMES = 'CLEAR_MY_GAMES';
 export const GET_GENRES = 'GET_GENRES';
 export const FILTER_BY_GENRE = 'FILTER_BY_GENRE';
 export const CLEAR_BY_GENRE = 'CLEAR_BY_GENRE';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 export function aumentar() {
     return {
@@ -103,6 +104,12 @@ export function filterByGenre(genre){
 
 export function clearByGenre(){
     return {
-        type: CLEAR_BY_GENRE
+        type: CLEAR_BY_GENRE,
+    }
+}
+
+export function clearMessage(){
+    return {
+        type: CLEAR_MESSAGE,
     }
 }

@@ -27,7 +27,7 @@ export default function FilterByGenre() {
 
                 <>Genre </>
 
-                <select name="genre" id="genre" onChange={selected} defaultValue="Select an option">
+                <select name="genre" id="genreSelect" onChange={selected} defaultValue="Select an option">
                     <option value="Select an option" disabled>Select an option</option>
                     {
                         allGenres.map(g => {

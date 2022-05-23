@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
+import styles from "./VideogameDetails.module.css";
 
 export default function VideogameDetails() {
 
@@ -52,7 +53,6 @@ export default function VideogameDetails() {
             } else if (details.genres.length !== 0) {
                 return g.name + ", "
             }
-
         })
 
     }
@@ -63,21 +63,21 @@ export default function VideogameDetails() {
         </div>
     }
 
-    return <div>
+    return (<div className={styles.details}>
 
-        <h1>{details.name}</h1>
+        <h1> {details.name}</h1>
 
         <img src={details.image} alt="not found" />
 
-        <p>Description: {details.description}</p>
+        <p><b>Description:</b> {details.description}</p>
 
-        <p>Genre: {genreList}</p>
+        <p><b>Genre:</b> {genreList}</p>
 
-        <p>Release date: {details.releaseDate}</p>
+        <p><b>Release date:</b> {details.releaseDate}</p>
 
-        <p>Rating: {details.rating}</p>
+        <p><b>Rating:</b> {details.rating}</p>
 
-        <p>Available on: {availableOn}</p>
+        <p><b>Available on:</b> {availableOn}</p>
 
-    </div>
+    </div>)
 }

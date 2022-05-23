@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 import { getGenres } from '../store1/actions';
 import SelectedInputAddVG from './SelectInputAddVG';
+import styles from "./AddVideogame.module.css";
 
 
 export default function AddVideogame() {
@@ -142,19 +143,19 @@ export default function AddVideogame() {
         
         if(form.name === ''){
             setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("name").className = 'warning'
+            document.getElementById("name").className = styles.warning;
         }
         if(form.description === ''){
             setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("description").className = 'warning'
+            document.getElementById("description").className = styles.warningDescription;
         }
         if(form.image === ''){
             setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("image").className = 'warning'
+            document.getElementById("image").className = styles.warning;
         }
         if(form.platforms === ''){
             setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("platforms").className = 'warning'
+            document.getElementById("platforms").className = styles.warning;
         }
         if(form.name === '' || form.description === '' || form.image === '' || form.platforms === ''){
             setForm({
@@ -165,10 +166,10 @@ export default function AddVideogame() {
             axios.post(`http://localhost:3001/api/videogame`, postRequirements)
             .then(r => {
                 // console.log("Soy asd", r.data);
-                document.getElementById("name").className = '';
-                document.getElementById("description").className = '';
-                document.getElementById("image").className = '';
-                document.getElementById("platforms").className = '';
+                document.getElementById("name").className = styles.inputBox
+                document.getElementById("description").className = styles.inputDescription;
+                document.getElementById("image").className = styles.inputBox;
+                document.getElementById("platforms").className = styles.inputBox;
 
                 setForm({
                     ...form,
@@ -194,7 +195,7 @@ export default function AddVideogame() {
                         ...form,
                         errorWarning: 'There is a videogame with that name already. Please try with another name.'
                     });
-                    document.getElementById("name").className = 'warning'
+                    document.getElementById("name").className = styles.warning;
                 }
             })
         }
@@ -205,49 +206,49 @@ export default function AddVideogame() {
 
         {
             (form.errorWarning)? 
-            <div>{form.errorWarning}</div> :
+            <div className={styles.error}>{form.errorWarning}</div> :
             null
         }
         {
             (form.success)? 
-            <div>{form.success}</div> :
+            <div className={styles.success}>{form.success}</div> :
             null
         }
 
-        <div>
-        <form onSubmit={onSubmitHandler}>
-                <div>
-                    <label htmlFor="name">Videogame name:</label>
-                    <input type="text" name="name" value = {form.name} id="name" placeholder="Videogame name" onChange={onChangeHandler} />
+        <div className={styles.divForm}>
+        <form onSubmit={onSubmitHandler} className={styles.form}>
+                <div className={styles.input}>
+                    <label htmlFor="name" className={styles.label}>Videogame name:</label>
+                    <textarea type="text" name="name" value = {form.name} id="name" placeholder="Videogame name" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
 
-                <div>
-                    <label htmlFor="description">Description: </label>
-                    <input type="text" name="description" value = {form.description} id="description" placeholder="Description" onChange={onChangeHandler} />
+                <div className={styles.input}>
+                    <label htmlFor="description" className={styles.label}>Description: </label>
+                    <textarea type="text" name="description" value = {form.description} id="description" placeholder="Description" onChange={onChangeHandler} className={styles.inputDescription}/>
                 </div>
 
-                <div>
-                    <label htmlFor="releaseDate">Release date: </label>   
-                    <input type="text" name="releaseDate" value = {form.date} id="releaseDate" placeholder="Release date" onChange={onChangeHandler} />
+                <div className={styles.input}>
+                    <label htmlFor="releaseDate" className={styles.label}>Release date: </label>   
+                    <textarea type="text" name="releaseDate" value = {form.date} id="releaseDate" placeholder="Release date" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
                 
-                <div>
-                    <label htmlFor="rating">Rating: </label>
-                    <input type="text" name="rating" value = {form.rating} id="rating" placeholder="Rating" onChange={onChangeHandler} />
+                <div className={styles.input}>
+                    <label htmlFor="rating" className={styles.label}>Rating: </label>
+                    <textarea type="text" name="rating" value = {form.rating} id="rating" placeholder="Rating" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
                 
-                <div>
-                    <label htmlFor="image">Image URL* : </label>
-                    <input type="text" name="image" value = {form.image} id="image" placeholder="Image's URL" onChange={onChangeHandler} />
+                <div className={styles.input}>
+                    <label htmlFor="image" className={styles.label}>Image URL* : </label>
+                    <textarea type="text" name="image" value = {form.image} id="image" placeholder="Image's URL" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
-                <div>
-                    <label htmlFor="platforms">Platforms* : </label>
-                    <input type="text" name="platforms" value = {form.platforms} id="platforms" placeholder="Available on..." onChange={onChangeHandler} />
+                <div className={styles.input}>
+                    <label htmlFor="platforms" className={styles.label}>Platforms* : </label>
+                    <textarea type="text" name="platforms" value = {form.platforms} id="platforms" placeholder="Available on..." onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
 
                 { /* Vincular géneros al juego que se está creando. */}
 
-                <select name="linkGenres" id="linkGenres" onChange={linkGenre} defaultValue='Select an option'>
+                <select name="linkGenres" id="linkGenres" onChange={linkGenre} defaultValue='Select an option' className={styles.input}>
                     <option value="Select an option" disabled>Link genres</option>
                     {
 
@@ -260,10 +261,10 @@ export default function AddVideogame() {
                     }
                 </select>
 
-                <button type="submit" id="submit">Add videogame</button>
+                <button type="submit" id="submit" className={styles.button}>Add videogame</button>
             </form>
         </div>
-
+        <div className={styles.genresChosen}>
         {
             (selectedGenres.length)?
             selectedGenres.map(genre => {
@@ -275,6 +276,7 @@ export default function AddVideogame() {
             }) :
             null
         }
+        </div>
 
     </div>
 }

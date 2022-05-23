@@ -11,12 +11,12 @@ function App() {
   return (
     <div className="App">
 
-    <Route path="/videogames">
-      <NavBar />
+    <Route exact path="/">
+      <LandingPage />
     </Route>
 
-    <Route exact path={"/welcome"}>
-      <LandingPage />
+    <Route path="/videogames">
+      <NavBar />
     </Route>
 
     <Switch>

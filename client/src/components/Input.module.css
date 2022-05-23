@@ -1,0 +1,28 @@
+.searchInput {
+    font-size: 20px;
+    border: black 3px solid;
+    border-radius: 20px;
+    padding: 7px;
+}
+
+.searchBtn {
+    color: rgba(220, 220, 0, 0.992);
+    border: rgba(0, 0, 0, 0.992) 3px solid;
+    border-radius: 20px;
+    background-color: #525252;
+    font-size: 20px;
+    padding: 7px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.resetSearch {
+    border-width: 3px;
+    font-size: 20px;
+    border-radius: 50px;
+    height: 40px;
+    background: #ff4747;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+}

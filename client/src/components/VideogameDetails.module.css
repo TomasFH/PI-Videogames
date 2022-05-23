@@ -1,0 +1,14 @@
+.details img {
+    width: 45%;
+    border-radius: 15px;
+}
+
+.details p {
+    text-align: justify;
+    margin: 15px;
+    padding: 10px;
+    border: rgba(192, 192, 2, 0.992) 3px solid;
+    border-radius: 20px;
+    background-color: rgba(150, 150, 150, 0.2);
+    inline-size: fit-content;
+}

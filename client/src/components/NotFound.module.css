@@ -1,0 +1,17 @@
+.notFoundContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.notFoundMsg {
+    color: rgb(249, 19, 19);
+    background-color: black;
+    border: rgb(130, 0, 0) 3px solid;
+    width: 400px;
+    padding: 5px;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
