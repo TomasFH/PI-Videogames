@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { filterByGenre, getGenres } from "../store1/actions";
+import { changeCurrentPage, filterByGenre, getGenres } from "../store1/actions";
 
 export default function FilterByGenre() {
 
@@ -14,7 +14,8 @@ export default function FilterByGenre() {
 
     function selected(e){
         console.log(e.target.value); // género
-        dispatch(filterByGenre(e.target.value))
+        dispatch(filterByGenre(e.target.value));
+        dispatch(changeCurrentPage(1));
     }
 
     /* HAY QUE HACER QUE LOS VIDEOJUEGOS FILTRADOS POR GÉNERO SE MUESTREN EN PANTALLA (solo hice que los

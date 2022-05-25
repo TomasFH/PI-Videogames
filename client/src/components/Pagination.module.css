@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.ul :active {
+    background-color: rgb(65, 65, 65);
+}
+
 .ul a {
     text-decoration: none;
     color: white;

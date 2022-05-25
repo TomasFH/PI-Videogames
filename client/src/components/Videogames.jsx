@@ -62,6 +62,16 @@ export default function Videogames(){
             </div>
         )
     }
+
+    if(document.getElementById("myGames") && document.getElementById("myGames").checked && showMyGames.length === 0){
+        console.log("No hay videojuegos creados aún.");
+        return (
+            <div>
+                You haven't added any game yet.
+            </div>
+        )
+    }
+
     return (<div>
         {/* <button onClick={() => dispatch(getVideogames())}>Traer videojuegos</button> */}
 

@@ -72,33 +72,129 @@ export default function AddVideogame() {
     const [errorInput, setErrorInput] = useState({
         name: '',
         description: '',
+        releaseDate: '',
+        rating: 0,
         image: '',
         platforms: '',
-
     })
 
     //Función para validar los inputs.
+    
+    const expressionIsAnURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+    const expressionIsANumber0to5 = /^[+-]?([0-5]+\.?[0-9]*|\.[0-9]+)$/
+    const expressionIsDate = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/ // yyyy/mm/dd  || yyyy/m/d
+    
+    // Copiado de MDN *. Esta función servirá para redondear
+    function round(num, decimales = 2) {
+        var signo = (num >= 0 ? 1 : -1);
+        num = num * signo;
+        if (decimales === 0) //con 0 decimales
+            return signo * Math.round(num);
+        // round(x * 10 ^ decimales)
+        num = num.toString().split('e');
+        num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+        // x * 10 ^ (-decimales)
+        num = num.toString().split('e');
+        return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+    }
 
     function validateInputs(input){
-        let errors = {};
+        let errors = {
+            name: '',
+            description: '',
+            releaseDate: '',
+            rating: 0,
+            image: '',
+            platforms: '',
+        };
 
-        const expressionIsAnURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 
-
-        if(input.name === ''){
+        if(input.name === '' ){
             errors.name = 'Name is required';
+            document.getElementById("name").className = styles.warning;
+        } else if(input.name.length > 30){
+            errors.name = 'Name input must have 1-30 characters'
+            document.getElementById("name").className = styles.warning;
+        } else if(errors.name === ''){
+            document.getElementById("name").className = styles.inputBox;
         }
+
         if(input.description === ''){
             errors.description = 'Description is required';
+            document.getElementById("description").className = styles.warningDescription;
+        } else if(input.description.length > 1000){
+            errors.description = 'Description input must have 1-1000 characters.'
+            document.getElementById("description").className = styles.warningDescription;
+        } else if(errors.description === ''){
+            document.getElementById("description").className = styles.inputDescription;
         }
+
+        if(input.releaseDate !== ''){
+            if(input.releaseDate !== ''){
+                console.log("Se proporcionó una fecha: ", input.releaseDate);
+                if(expressionIsDate.test(input.releaseDate)){
+
+                    console.log("La fecha ingresada cumple con el formato solicitado");
+                    errors.releaseDate = '';
+                    document.getElementById("releaseDate").className = styles.inputBox;
+                    
+                } else if(!expressionIsDate.test(input.releaseDate)){
+                    
+                    console.log("La fecha ingresada NOO cumple con el formato solicitado");
+                    errors.releaseDate = 'Must be a date. Date format has to be yyyy-mm-dd using hyphen ( - )';
+                    document.getElementById("releaseDate").className = styles.warning;
+
+                }
+            } else if(input.releaseDate === ''){
+
+                console.log("No se proporcionó ninguna fecha");
+                document.getElementById("releaseDate").className = styles.inputBox;
+
+            }
+        }
+        if(input.rating !== ''){
+            if(expressionIsANumber0to5.test(input.rating) && Number(input.rating) >= 0 && Number(input.rating) <= 5){
+
+                console.log("El rating ingresado es válido", input.rating);
+                errors.rating = ''
+                console.log(typeof input.rating);
+                document.getElementById("rating").className = styles.inputBox;
+
+            } else {
+
+                console.log("El rating ingresado es inválido? : ", input.rating);
+                errors.rating = 'Must be number between 0-5. Decimals must be separated by a dot ( . )';
+                document.getElementById("rating").className = styles.warning;
+
+            }
+        }
+
+        if(input.rating === ''){
+
+            console.log("No recibi nada de rating");
+            document.getElementById("rating").className = styles.inputBox;
+
+        }
+
         if(input.image === ''){
             errors.image = "Image's URL is required";
+            document.getElementById("image").className = styles.warning;
         } else if(!expressionIsAnURL.test(input.image)){
             console.log("La URL ingresada es incorrecta");
             errors.image = 'URL not valid.'
+            document.getElementById("image").className = styles.warning;
+        } else if(errors.image === ''){
+            document.getElementById("image").className = styles.inputBox;
         }
+
         if(input.platforms === ''){
             errors.platforms = 'Platform is required';
+            document.getElementById("platforms").className = styles.warning;
+        } else if(input.platforms.length > 100){
+            errors.platforms = 'Platform input must have 1-100 characters'
+            document.getElementById("platforms").className = styles.warning;
+        } else if(errors.platforms === ''){
+            document.getElementById("platforms").className = styles.inputBox;
         }
 
         return errors;
@@ -173,41 +269,52 @@ export default function AddVideogame() {
 
         e.preventDefault(); // para no recargar la pág.
 
+        let ratingValueAux = 0;
+
+        if(form.rating !== ''){
+            ratingValueAux = round(form.rating)
+        }
+
+        console.log("ratingValueAux" ,ratingValueAux)
+
         const postRequirements = {
             name: form.name,
             description: form.description,
             releaseDate: form.releaseDate,
-            rating: form.rating,
+            rating: ratingValueAux,
             image: form.image,
             genre: selectedGenres,
             platforms: form.platforms,
         }
-        
-        if(form.name === ''){
-            setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("name").className = styles.warning;
-        }
-        if(form.description === ''){
-            setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("description").className = styles.warningDescription;
-        }
-        if(form.image === ''){
-            setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("image").className = styles.warning;
-        }
-        if(form.platforms === ''){
-            setForm({errorWarning: 'Please fill all required inputs before post!'})
-            document.getElementById("platforms").className = styles.warning;
-        }
+
+        console.log("post: ", postRequirements)
+
         if(form.name === '' || form.description === '' || form.image === '' || form.platforms === ''){
+
+            console.log("El que controla todo 1");
+
             setForm({
                 ...form,
                 errorWarning: 'Please fill all required inputs before post!'
                 })
-        } else {
+
+        } else if(!(errorInput.name === '' && errorInput.description === '' && ratingValueAux <= 5 && ratingValueAux >= 0 && errorInput.image === '' && errorInput.platforms === '' && errorInput.releaseDate === '')){
+            
+            console.log("Hay un ínput que no cumple");
+            
+            setForm({
+                ...form,
+                errorWarning: 'Check the error/s'
+            })
+
+        } else if(errorInput.name === '' && errorInput.description === '' && errorInput.image === '' && errorInput.platforms === '' && errorInput.releaseDate === '') {
+
+            console.log("Creando juego...");
+
             axios.post(`http://localhost:3001/api/videogame`, postRequirements)
             .then(r => {
                 // console.log("Soy asd", r.data);
+
                 document.getElementById("name").className = styles.inputBox
                 document.getElementById("description").className = styles.inputDescription;
                 document.getElementById("image").className = styles.inputBox;
@@ -241,6 +348,8 @@ export default function AddVideogame() {
                     document.getElementById("name").className = styles.warning;
                 }
             })
+        } else {
+            console.log("No entré en nada...")
         }
     }
 
@@ -264,21 +373,29 @@ export default function AddVideogame() {
                         (errorInput && errorInput.name)? <p className={styles.warningMessage}>{errorInput.name}</p> : null
                     }
                 <div className={styles.input}>
-                    <label htmlFor="name" className={styles.label}>Videogame name:</label>
+                    <label htmlFor="name" className={styles.label}>Videogame name*:</label>
                     <textarea type="text" name="name" value = {form.name} id="name" placeholder="Videogame name" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
                     {
                         (errorInput && errorInput.description)? <p className={styles.warningMessage}>{errorInput.description}</p> : null
                     }
                 <div className={styles.input}>
-                    <label htmlFor="description" className={styles.label}>Description: </label>
+                    <label htmlFor="description" className={styles.label}>Description*: </label>
                     <textarea type="text" name="description" value = {form.description} id="description" placeholder="Description" onChange={onChangeHandler} className={styles.inputDescription}/>
                 </div>
+
+                    {
+                        (errorInput && errorInput.releaseDate)? <p className={styles.warningMessage}>{errorInput.releaseDate}</p> : null
+                    }
 
                 <div className={styles.input}>
                     <label htmlFor="releaseDate" className={styles.label}>Release date: </label>   
                     <textarea type="text" name="releaseDate" value = {form.date} id="releaseDate" placeholder="Release date" onChange={onChangeHandler} className={styles.inputBox} />
                 </div>
+
+                    {
+                        (errorInput && errorInput.rating)? <p className={styles.warningMessage}>{errorInput.rating}</p> : null
+                    }
                 
                 <div className={styles.input}>
                     <label htmlFor="rating" className={styles.label}>Rating: </label>
@@ -334,11 +451,4 @@ export default function AddVideogame() {
         </div>
 
     </div>
-}
-
-
-// HAY QUE VINCULAR 
-
-// HAY QUE HACER TODO LO QUE HICE PARA GENRES, PERO AHORA PARA PLATFORM.
-
-// HAY QUE HACER QUE LE LLEGUE ALGO A PLATFORMS. SINO, EL POST TIRA ERROR PORQUE ES OBLIGATORIO AGREGAR PLATFORM/S.
+};
