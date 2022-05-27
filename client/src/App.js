@@ -6,6 +6,7 @@ import VideogameDetails from './components/VideogameDetails';
 import AddVideogame from './components/AddVideogame';
 import Order from './components/Order';
 import LandingPage from './components/LandingPage';
+import VideogameNotFound from './components/VideogameNotFound';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
     <Switch>
 
       <Route exact path="/videogames">
+        <VideogameNotFound />
         <Order />
         <Videogames />
       </Route>

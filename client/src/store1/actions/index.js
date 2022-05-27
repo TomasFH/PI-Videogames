@@ -3,6 +3,7 @@ import axios from 'axios'
 export const AUMENTAR = 'AUMENTAR';
 export const GET_VIDEOGAMES = 'GET_VIDEOGAMES';
 export const SEARCH_VIDEOGAME = 'SEARCH_VIDEOGAME';
+export const VIDEOGAME_NOT_FOUND = 'VIDEOGAME_NOT_FOUND';
 export const CLEAR = 'CLEAR';
 export const ORDER_BY = 'ORDER_BY';
 export const RESET_ORDER = 'RESET_ORDER';
@@ -42,6 +43,13 @@ export function searchVideogame(name){
             dispatch({
                 type: SEARCH_VIDEOGAME,
                 payload: r.data
+            })
+        })
+        .catch(err => {
+            console.log("Soy error.response.data: ", err.response.data.error)
+            dispatch({
+                type: VIDEOGAME_NOT_FOUND,
+                payload: err.response.data.error
             })
         })
     }

@@ -41,6 +41,15 @@ export default function Input () {
         dispatch(resetOrder());
         dispatch(clearByGenre());
         dispatch(changeCurrentPage(1));
+        dispatch(setSelectedInput(''));
+        if (document.getElementById("order")) {
+            console.log(document.getElementById("order").value);
+            document.getElementById("order").value = "Select an option";
+        };
+        if (document.getElementById("genreSelect")) {
+            console.log(document.getElementById("genreSelect").value);
+            document.getElementById("genreSelect").value = "Select an option";
+        };
         let auxAZ = document.getElementById("a-z");
         let auxGenre = document.getElementById("genre");
         if(auxAZ?.checked){
