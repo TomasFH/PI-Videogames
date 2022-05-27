@@ -276,6 +276,45 @@ router.post(`/link-to-genre/:videogameId/:genreId`, async (req, res, next) => {
     }
 })
 
+router.put("/:idVG", async (req, res, next) => {
+    try {
+        const {idVG} = req.params;
+        const {name} = req.body;
+    
+        const update = await Videogame.update(
+            {name: name},
+            {
+                where: {
+                    id: idVG
+                },
+            }
+        );
+    
+        // res.send(`Cambié el nombre del juego id ${idVG} a ${name}`)
+        res.send(`Se actualizaron ${update} juego/s.`)
+    } catch (error) {
+        res.send("Falló")
+    }
+});
+router.delete("/:idVG", async (req, res, next) => {
+    try {
+        const {idVG} = req.params;
+    
+        const deleted = await Videogame.destroy(
+            {
+                where: {
+                    id: idVG
+                },
+            }
+        );
+    
+        // res.send(`Cambié el nombre del juego id ${idVG} a ${name}`)
+        res.send(`Se eliminó ${deleted} juego/s.`)
+    } catch (error) {
+        res.send("Falló")
+    }
+});
+
 module.exports = router;
 
 

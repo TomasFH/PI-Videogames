@@ -29,7 +29,7 @@ const { Genre } = require("./src/db.js");
 conn.sync({ force: false }).then(() => {
 
   async function createGenreList(){
-    await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
+    axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
     .then(response => {
       let aux = response.data.results
       // console.log("Soy AUX: ", aux);
