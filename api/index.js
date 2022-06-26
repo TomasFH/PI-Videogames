@@ -48,7 +48,7 @@ conn.sync({ force: false }).then(() => {
 
   createGenreList();
 
-  server.listen(3001, () => {
+  server.listen(process.env.PORT, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });
 });

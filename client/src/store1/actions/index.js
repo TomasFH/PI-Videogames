@@ -26,7 +26,7 @@ export function aumentar() {
 
 export function getVideogames(){
     return function(dispatch){
-        axios.get(`http://localhost:3001/api/videogame`)
+        axios.get(`/api/videogame`)
         .then(r => {
             dispatch({
                 type: GET_VIDEOGAMES,
@@ -38,7 +38,7 @@ export function getVideogames(){
 
 export function searchVideogame(name){
     return function(dispatch){
-        axios.get(`http://localhost:3001/api/videogame?name=${name}`)
+        axios.get(`/api/videogame?name=${name}`)
         .then(r => {
             dispatch({
                 type: SEARCH_VIDEOGAME,
@@ -95,7 +95,7 @@ export function clearMyGames(){
 
 export function getGenres(){
     return function(dispatch){
-        axios.get(`http://localhost:3001/api/genre`)
+        axios.get(`/api/genre`)
         .then(r => {
             dispatch({
                 type: GET_GENRES,

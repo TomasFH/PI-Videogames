@@ -15,14 +15,18 @@ export default function VideogameDetails() {
 
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/api/videogame/${videogameId}`)
+        axios.get(`/api/videogame/${videogameId}`)
         .then(r => {
             const response = r.data
             // console.log(response);
             setDetails(response);
             console.log("Voy a cambiar el loading a false")
             setLoading(false);
-        })
+        });
+
+        return () => {
+            console.log("Me desmonté !")
+        }
 
     }, [])
 

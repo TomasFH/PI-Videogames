@@ -23,7 +23,7 @@ export default function AddVideogame() {
         // en este componente.
         
         if(genreListAux.length === 0) {
-            axios.get(`http://localhost:3001/api/genre`)
+            axios.get(`/api/genre`)
             .then(r => {
                 // console.log("Se ejecutó el axios y devolvió r.data= ", r.data)
                 let aux1 = r.data.map(g => g);
@@ -311,7 +311,7 @@ export default function AddVideogame() {
 
             console.log("Creando juego...");
 
-            axios.post(`http://localhost:3001/api/videogame`, postRequirements)
+            axios.post(`/api/videogame`, postRequirements)
             .then(r => {
                 // console.log("Soy asd", r.data);
 
@@ -333,7 +333,7 @@ export default function AddVideogame() {
 
                 // console.log("La id del nuevo juego es: ", newGameID)
                 postRequirements.genre.map(g => {
-                    axios.post(`http://localhost:3001/api/videogame/link-to-genre/${newGameID}/${g.id}`) //1ro el juego, 2do el género
+                    axios.post(`/api/videogame/link-to-genre/${newGameID}/${g.id}`) //1ro el juego, 2do el género
                 })
             })
             .catch(error => {
