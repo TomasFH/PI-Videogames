@@ -44,7 +44,10 @@ conn.sync({ force: false }).then(() => {
         }
       })
     })
-  }
+    .catch(error => {
+      console.log(error);
+    });
+  };
 
   createGenreList();
 

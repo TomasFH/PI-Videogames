@@ -9,12 +9,16 @@ const { Videogame, Genre } = require("../db");
 const router = Router();
 
 router.get('/', async (req, res, next) => {
-    const newGenre = await Genre.findAll({
-        include: Videogame
-    })
+    try {
+        const newGenre = await Genre.findAll({
+            include: Videogame
+        })
+        res.send(newGenre);
+    } catch (error) {
+        next(error);
+    };
 
-    res.send(newGenre);
-})
+});
 
 router.post("/", (req, res, next) => {
 
@@ -24,6 +28,9 @@ router.post("/", (req, res, next) => {
     .then(r => {
         res.send("Se ha agregado el género " + r);
     })
-})
+    .catch(error => {
+        next(error);
+    });
+});
 
 module.exports = router;

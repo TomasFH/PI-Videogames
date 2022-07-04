@@ -13,126 +13,130 @@ router.get("/", async (req, res, next) => {
 
     const {name} = req.query;
 
-    if(name){
-        //si se le pasa un nombre por Query hace una búsqueda en base a ese nombre
-
-        try {
-            const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}`)
-            const dbVideogamePromise = await Videogame.findAll({
-                where: {
-                    name: {
-                        [Op.iLike] : '%' + name + '%'
+    try {
+        if(name){
+            //si se le pasa un nombre por Query hace una búsqueda en base a ese nombre
+    
+            try {
+                const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}`)
+                const dbVideogamePromise = await Videogame.findAll({
+                    where: {
+                        name: {
+                            [Op.iLike] : '%' + name + '%'
+                        }
+                    },
+                    include: Genre
+                })
+    
+                // console.log('dbVideogamePromise ', dbVideogamePromise)
+    
+                const filteredApiVideogame = apiVideogamePromise.data.results.map((videogame) => {
+                    return {
+                        // imagen, nombre, genero, rating
+                        name: videogame.name,
+                        image: videogame.background_image,
+                        genres: videogame.genres,   //llega como arreglo
+                        rating: videogame.rating,
+                        id: videogame.id
                     }
-                },
-                include: Genre
-            })
-
-            // console.log('dbVideogamePromise ', dbVideogamePromise)
-
-            const filteredApiVideogame = apiVideogamePromise.data.results.map((videogame) => {
-                return {
-                    // imagen, nombre, genero, rating
-                    name: videogame.name,
-                    image: videogame.background_image,
-                    genres: videogame.genres,   //llega como arreglo
-                    rating: videogame.rating,
-                    id: videogame.id
+                })
+    
+                const filteredDbVideogame = dbVideogamePromise.map((videogame) => {
+                    return {
+                        name: videogame.dataValues.name,
+                        image: videogame.dataValues.image,
+                        genres: videogame.dataValues.genres,
+                        rating: videogame.dataValues.rating,
+                        id: videogame.dataValues.id
+                    }
+                })
+    
+                if((filteredApiVideogame.length === 0) && (filteredDbVideogame.length === 0)){
+                    // es decir, no se encontró nungún juego cuyo nombre coincida con lo pasado por Query
+                    return res.status(404).send({error: "Videogame not found"})
                 }
-            })
-
-            const filteredDbVideogame = dbVideogamePromise.map((videogame) => {
-                return {
-                    name: videogame.dataValues.name,
-                    image: videogame.dataValues.image,
-                    genres: videogame.dataValues.genres,
-                    rating: videogame.dataValues.rating,
-                    id: videogame.dataValues.id
-                }
-            })
-
-            if((filteredApiVideogame.length === 0) && (filteredDbVideogame.length === 0)){
-                // es decir, no se encontró nungún juego cuyo nombre coincida con lo pasado por Query
-                return res.status(404).send({error: "Videogame not found"})
-            }
-
-            const allVideogames = [ ...filteredApiVideogame, ...filteredDbVideogame]
-
-            res.send(allVideogames)
+    
+                const allVideogames = [ ...filteredApiVideogame, ...filteredDbVideogame]
+    
+                res.send(allVideogames)
+                
+            } catch (error) {
+                next(error)
+            } 
+    
+        } else{
+            //si no se le pasa ningún nombre por Query busca todo
+    
+            try {
+                let promises = [];
+                let resultados;
+                let aux2 = [];
             
-        } catch (error) {
-            next(error)
-        } 
-
-    } else{
-        //si no se le pasa ningún nombre por Query busca todo
-
-        try {
-            let promises = [];
-            let resultados;
-            let aux2 = [];
-        
-            for (let i = 1; i <= 5; i++) {
-                promises.push(axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`))
-            }
-        
-            await Promise.all(promises).then(values => {
-                // console.log("Me ejecuté 1: ", values[0].data.results, " Fin!");
-        
-                // resultados = values[0].data.results
-        
-                resultados = values.map(o => {
-                    return o.data.results
+                for (let i = 1; i <= 5; i++) {
+                    promises.push(axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page=${i}`))
+                }
+            
+                await Promise.all(promises).then(values => {
+                    // console.log("Me ejecuté 1: ", values[0].data.results, " Fin!");
+            
+                    // resultados = values[0].data.results
+            
+                    resultados = values.map(o => {
+                        return o.data.results
+                    })
+            
+                }, reason => {
+                  console.log("Me rechazé: ", reason)
+                });
+            
+                // console.log(resultados)
+            
+                for (let r = 0; r < resultados.length; r++) {
+                    for (let s = 0; s < resultados[r].length; s++) {
+                        aux2 = [
+                            ...aux2,
+                            resultados[r][s]
+                        ]
+                    }
+                }
+                // const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
+                const dbVideogamePromise = await Videogame.findAll({
+                    include: Genre
                 })
         
-            }, reason => {
-              console.log("Me rechazé: ", reason)
-            });
+                const filteredDbVideogame = dbVideogamePromise.map((videogame) => {
+                   return {
+                       name: videogame.dataValues.name,
+                       image: videogame.dataValues.image,
+                       genres: videogame.dataValues.genres,
+                       rating: videogame.dataValues.rating,
+                       id: videogame.dataValues.id,
+                   }
+                })
         
-            // console.log(resultados)
+                const filteredApiVideogame = aux2.map((videogame) => {
+                    return {
+                        // imagen, nombre, genero, rating
+                        name: videogame.name,
+                        image: videogame.background_image,
+                        genres: videogame.genres,   //llega como arreglo
+                        rating: videogame.rating,
+                        id: videogame.id,
+                    }
+                })
         
-            for (let r = 0; r < resultados.length; r++) {
-                for (let s = 0; s < resultados[r].length; s++) {
-                    aux2 = [
-                        ...aux2,
-                        resultados[r][s]
-                    ]
-                }
+                const allVideogames = [ ...filteredApiVideogame, ...filteredDbVideogame]
+        
+                res.send(allVideogames)
+            } catch (error) {
+                next(error)
             }
-            // const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
-            const dbVideogamePromise = await Videogame.findAll({
-                include: Genre
-            })
     
-            const filteredDbVideogame = dbVideogamePromise.map((videogame) => {
-               return {
-                   name: videogame.dataValues.name,
-                   image: videogame.dataValues.image,
-                   genres: videogame.dataValues.genres,
-                   rating: videogame.dataValues.rating,
-                   id: videogame.dataValues.id,
-               }
-            })
-    
-            const filteredApiVideogame = aux2.map((videogame) => {
-                return {
-                    // imagen, nombre, genero, rating
-                    name: videogame.name,
-                    image: videogame.background_image,
-                    genres: videogame.genres,   //llega como arreglo
-                    rating: videogame.rating,
-                    id: videogame.id,
-                }
-            })
-    
-            const allVideogames = [ ...filteredApiVideogame, ...filteredDbVideogame]
-    
-            res.send(allVideogames)
-        } catch (error) {
-            next(error)
         }
-
-    }
-})
+    } catch (error) {
+        next(error);
+    };
+});
 
 // router.get("/",async (req,res,next) => {
 
@@ -224,9 +228,9 @@ router.get("/:videogameId", async (req, res, next) => {
             res.send(filteredDbVideogame)
         }
     } catch (error) {
-            
-    }
-})
+          next(error);  
+    };
+});
 
 router.post("/", async (req, res, next) => {
     // nombre, descripción, fecha de lanzamiento, rating 
