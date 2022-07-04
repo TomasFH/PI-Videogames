@@ -89,16 +89,22 @@ router.get("/", async (req, res, next) => {
                   console.log("Me rechazé: ", reason)
                 });
             
-                // console.log(resultados)
+                // console.log("Soy resultados: ", resultados)
             
-                for (let r = 0; r < resultados.length; r++) {
-                    for (let s = 0; s < resultados[r].length; s++) {
-                        aux2 = [
-                            ...aux2,
-                            resultados[r][s]
-                        ]
+                if(resultados.length) {
+                    console.log("Hay resultados")
+                    for (let r = 0; r < resultados.length; r++) {
+                        for (let s = 0; s < resultados[r].length; s++) {
+                            aux2 = [
+                                ...aux2,
+                                resultados[r][s]
+                            ]
+                        }
                     }
-                }
+                } else {
+                    console.log("No hubieron resultados")
+                };
+                
                 // const apiVideogamePromise = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}`)
                 const dbVideogamePromise = await Videogame.findAll({
                     include: Genre
